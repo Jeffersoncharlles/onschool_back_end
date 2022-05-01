@@ -5,7 +5,139 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// datasource db {
+//   provider = "sqlite"
+//   url      = "file:./dev.db"
+// }
+
+// datasource db {
+//   provider = "mysql"
+//   url      = env("DATABASE_URL")
+// }
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String @id @default(uuid())
+  name     String
+  email    String @unique
+  password String
+
+  courses Courses[] // um usuario pode ter varios cursos
+
+  role           Role             @default(USER)
+  HistoryStudent HistoryStudent[] // usuario pode ter varios historicos
+
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @default(now())
+
+  @@map("users")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model Courses {
+  id          String @id @default(uuid())
+  name        String @unique
+  description String
+  image       String
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id]) //1 usuario pode ter varios cursos
+
+  classes        Classes[] //1 curso pode ter varias aulas
+  modulesCourses ModulesCourses[] // 1 curso pode ter varios modulos
+
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @default(now())
+
+  @@map("courses")
+}
+
+model ModulesCourses {
+  id   String @id @default(uuid())
+  name String
+
+  cousesId String
+  courses  Courses @relation(fields: [cousesId], references: [id]) //1 curso pode ter varios modules
+
+  classes   Classes @relation(fields: [classesId], references: [id])
+  classesId String  @unique
+
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @default(now())
+
+  @@map("modulesCourses")
+}
+
+enum Type {
+  QUIZ
+  VIDEO
+}
+
+model Classes {
+  id         String @id @default(uuid())
+  classOrder Int
+  type       Type   @default(VIDEO)
+
+  courses   Courses? @relation(fields: [coursesId], references: [id]) //1 curso pode ter varias aulas
+  coursesId String? //nome da tabela cursos 
+
+  modulesCoursesId ModulesCourses? //a aula pode ter 1 modululo relacao 1-1
+
+  HistoryStudent HistoryStudent[] //uma aula pode ter varios historicos
+
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @default(now())
+
+
+  @@map("classes")
+}
+
+model Videos {
+  id          String    @id @default(uuid())
+  name        String
+  slug        String?
+  description String?
+  url         String?
+  createdAt   DateTime? @default(now())
+  updatedAt   DateTime? @default(now())
+
+  @@map("videos")
+}
+
+model Quiz {
+  id        String    @id @default(uuid())
+  question  String
+  option1   String
+  option2   String
+  option3   String
+  option4   String
+  answer    Int
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @default(now())
+
+  @@map("quizs")
+}
+
+model HistoryStudent {
+  id         String    @id @default(uuid())
+  dataViewed DateTime? @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id]) //1 usuario pode ter varios cursos
+
+  classes   Classes @relation(fields: [classesId], references: [id])
+  classesId String
+
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @default(now())
+
+  @@map("historyStudents")
 }
