@@ -8,7 +8,7 @@ class CreateUserController {
 
         const response = await create.execute({ email, name, password })
 
-        return response
+        return res.json(response)
     }
 }
 

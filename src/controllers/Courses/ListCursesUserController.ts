@@ -7,7 +7,7 @@ class ListCursesUserController {
         const listCousesUser = new ListCursesUserService()
         const userId = req.userId
         const response = await listCousesUser.execute({ userId })
-        return response
+        return res.json(response)
     }
 }
 
