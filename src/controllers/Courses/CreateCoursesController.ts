@@ -6,8 +6,8 @@ class CreateCoursesController {
     async handle(req: Request, res: Response) {
         const create = new CreateCoursesService()
         const userId = req.userId
-        const { description, image, name } = req.body
-        const response = await create.execute({ userId, description, image, name })
+        const { name, description, image } = req.body
+        const response = await create.execute({ userId, name, description, image })
         return res.json(response)
     }
 }

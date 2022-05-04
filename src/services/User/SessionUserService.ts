@@ -12,7 +12,7 @@ class SessionUserService {
     async execute({ email, password }: ISession) {
         const secret = process.env.SECRET_JWT || 'c1026ccf9f922dc76c370e06de97675e089f8fb3'
 
-        const userExists = await prisma.user.findFirst({ where: { email } })
+        const userExists = await prisma.student.findFirst({ where: { email } })
         if (!userExists) throw new Error("User/Password not Authorization")
 
         const passwordMatch = await compare(password, userExists.password)

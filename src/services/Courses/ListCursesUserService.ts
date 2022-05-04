@@ -7,7 +7,7 @@ interface IListCurse {
 class ListCursesUserService {
     async execute({ userId }: IListCurse) {
 
-        const courses = await prisma.courses.findMany({ where: { id: userId } })
+        const courses = await prisma.course.findMany({ where: { id: userId } })
 
         if (!courses) throw new Error("not Courses")
 

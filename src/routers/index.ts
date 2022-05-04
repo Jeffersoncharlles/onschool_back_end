@@ -1,4 +1,4 @@
-import { Router, Request, Response } from 'express'
+import { Router } from 'express'
 
 import { ensureAuthenticate } from '../middlewares/ensureAuthenticate';
 
@@ -6,6 +6,7 @@ import { CreateUserController } from '../controllers/User/CreateUserController'
 import { SessionUserController } from '../controllers/User/SessionUserController';
 import { ListCursesUserController } from '../controllers/Courses/ListCursesUserController';
 import { CreateCoursesController } from '../controllers/Courses/CreateCoursesController';
+import { CreateStudentController } from '../controllers/Student/CreateStudentController';
 
 
 
@@ -16,16 +17,21 @@ const sessionUserController = new SessionUserController()
 const listCursesUserController = new ListCursesUserController()
 const createCoursesController = new CreateCoursesController()
 
-Routers.get('/', (req: Request, res: Response) => {
+const createStudentController = new CreateStudentController()
+
+Routers.get('/', (req, res) => {
     return res.json({ message: 'Hello World' })
 })
 
 //---- ROTAS USER ---//
 Routers.post('/users', createUserController.handle)
-Routers.post('/session', sessionUserController.handle)
+Routers.post('/users/session', sessionUserController.handle)
+
+//---- ROTAS STUDENT ---//
+Routers.post('/student', createStudentController.handle)
 
 //---- ROTAS COURSES ---//
-Routers.get('/courses', ensureAuthenticate, listCursesUserController.handle)
+Routers.get('/courses', listCursesUserController.handle)
 Routers.post('/courses', ensureAuthenticate, createCoursesController.handle)
 Routers.get('/course/:courseId',)
 
