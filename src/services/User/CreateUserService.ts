@@ -12,6 +12,7 @@ interface ICreate {
 class CreateUserService {
     async execute({ email, name, password }: ICreate) {
         const secret = process.env.SECRET_JWT || 'c1026ccf9f922dc76c370e06de97675e089f8fb3'
+        const jwtPrivateKey = process.env.JWT_PRIVATE_KEY || 'c1026ccf9f922dc76c370e06de97675e089f8fb3';
 
         const userExists = await prisma.student.findFirst({ where: { email } })
 
@@ -30,9 +31,10 @@ class CreateUserService {
             }
         })
 
-        const token = sign({ name: user.name, email: user.email }, secret, {
+        const token = sign({ name: user.name, email: user.email }, jwtPrivateKey, {
+            algorithm: 'RS256',
             subject: user.id,
-            expiresIn: '7d'
+            expiresIn: '15m'
         })
 
         const response = {

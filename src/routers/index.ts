@@ -7,6 +7,7 @@ import { SessionUserController } from '../controllers/User/SessionUserController
 import { ListCursesUserController } from '../controllers/Courses/ListCursesUserController';
 import { CreateCoursesController } from '../controllers/Courses/CreateCoursesController';
 import { CreateStudentController } from '../controllers/Student/CreateStudentController';
+import { CreateCoursesModuleController } from '../controllers/CoursesModule/CreateCoursesModuleController';
 
 
 
@@ -18,6 +19,8 @@ const listCursesUserController = new ListCursesUserController()
 const createCoursesController = new CreateCoursesController()
 
 const createStudentController = new CreateStudentController()
+
+const createCoursesModulesController = new CreateCoursesModuleController()
 
 Routers.get('/', (req, res) => {
     return res.json({ message: 'Hello World' })
@@ -34,6 +37,7 @@ Routers.post('/student', createStudentController.handle)
 Routers.get('/courses', listCursesUserController.handle)
 Routers.post('/courses', ensureAuthenticate, createCoursesController.handle)
 Routers.get('/course/:courseId',)
+Routers.post('/course/modules/', ensureAuthenticate, createCoursesModulesController.handle)
 
 
 

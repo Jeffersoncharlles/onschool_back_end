@@ -20,11 +20,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Roles {
+  ADMIN
+  ADITOR
+}
+
 model User {
   id       String @id @default(uuid())
   name     String
   email    String @unique
   password String
+  role     Roles  @default(ADMIN)
 
   createdAt DateTime? @default(now())
   updatedAt DateTime? @default(now())
@@ -103,6 +109,7 @@ model Classes {
   id         String      @id @default(uuid())
   classOrder Int
   type       TypeClasses @default(VIDEO)
+  name       String      @unique
 
   course   Course @relation(fields: [courseId], references: [id]) //1 curso pode ter varias aulas
   courseId String //nome da tabela cursos 

@@ -8,6 +8,7 @@ interface IPayload {
 
 const ensureAuthenticate = (req: Request, res: Response, next: NextFunction) => {
     const secret = process.env.SECRET_JWT || 'c1026ccf9f922dc76c370e06de97675e089f8fb3'
+    const jwtPublicKey = process.env.JWT_PUBLIC_KEY || 'c1026ccf9f922dc76c370e06de97675e089f8fb3';
 
     // Receber o token
     const authToken = req.headers.authorization
@@ -19,7 +20,7 @@ const ensureAuthenticate = (req: Request, res: Response, next: NextFunction) => 
 
     try {
         //validar o token
-        const { sub } = verify(token, secret) as IPayload
+        const { sub } = verify(token, jwtPublicKey) as IPayload
 
         req.userId = sub;
 
