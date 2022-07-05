@@ -6,10 +6,10 @@ import { CreateClassesCoursesServices } from "../../services/Classes/CreateClass
 class CreateClassesCoursesController {
     async handle(req: Request, res: Response) {
         const create = new CreateClassesCoursesServices();
-        const { courseId, name, type, modulesCoursesId } = req.body
+        const { courseId, name, type, modulesCoursesId, url, description } = req.body
         const userId = req.userId
 
-        const response = await create.execute({ courseId, name, type, modulesCoursesId, userId })
+        const response = await create.execute({ courseId, name, type, modulesCoursesId, userId, url, description })
 
         return res.json(response)
 

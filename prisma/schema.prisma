@@ -95,8 +95,9 @@ model ModulesCourses {
   Classes Classes[]
 
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @default(now())
+  ExtendedVideos ExtendedVideos[]
   @@map("modulesCourses")
 }
 
@@ -106,10 +107,9 @@ enum TypeClasses {
 }
 
 model Classes {
-  id         String      @id @default(uuid())
-  classOrder Int
-  type       TypeClasses @default(VIDEO)
-  name       String      @unique
+  id   String      @id @default(uuid())
+  type TypeClasses @default(VIDEO)
+  name String      @unique
 
   course   Course @relation(fields: [courseId], references: [id]) //1 curso pode ter varias aulas
   courseId String //nome da tabela cursos 
@@ -117,33 +117,44 @@ model Classes {
   modulesCourses   ModulesCourses @relation(fields: [modulesCoursesId], references: [id])
   modulesCoursesId String
 
+  video ExtendedVideos?
+  quiz  ExtendedQuiz?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
   @@map("classes")
 }
 
-model Videos {
+model ExtendedVideos {
   id          String   @id @default(uuid())
-  name        String
+  classesId   String?  @unique
+  name        String?
   slug        String?
   description String?
-  url         String
+  url         String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now())
 
-  @@map("videos")
+  classes          Classes?        @relation(fields: [classesId], references: [id])
+  modulesCourses   ModulesCourses? @relation(fields: [modulesCoursesId], references: [id])
+  modulesCoursesId String?
+
+
+  @@map("extendedvideos")
 }
 
-model Quiz {
+model ExtendedQuiz {
   id        String   @id @default(uuid())
-  question  String
-  option1   String
-  option2   String
-  option3   String
-  option4   String
-  answer    Int
+  classesId String?  @unique
+  question  String?
+  option1   String?
+  option2   String?
+  option3   String?
+  option4   String?
+  answer    Int?
+  classes   Classes? @relation(fields: [classesId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 
-  @@map("quizs")
+  @@map("extendedquiz")
 }
