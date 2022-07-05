@@ -8,7 +8,9 @@ class CreateCoursesModuleController {
         const { cousesId, name } = req.body
         const userId = req.userId
 
-        const response = create.execute({ cousesId, name, userId })
+        const response = await create.execute({ cousesId, name, userId })
+
+        return res.json(response)
 
     }
 }

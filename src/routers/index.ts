@@ -8,6 +8,8 @@ import { ListCursesUserController } from '../controllers/Courses/ListCursesUserC
 import { CreateCoursesController } from '../controllers/Courses/CreateCoursesController';
 import { CreateStudentController } from '../controllers/Student/CreateStudentController';
 import { CreateCoursesModuleController } from '../controllers/CoursesModule/CreateCoursesModuleController';
+import { ListModulesCourseController } from '../controllers/CoursesModule/ListModulesCourseController';
+import { CreateClassesCoursesController } from '../controllers/Classes/CreateClassesCoursesController';
 
 
 
@@ -21,6 +23,10 @@ const createCoursesController = new CreateCoursesController()
 const createStudentController = new CreateStudentController()
 
 const createCoursesModulesController = new CreateCoursesModuleController()
+const listModulesCourseController = new ListModulesCourseController()
+
+
+const createClassesCoursesController = new CreateClassesCoursesController()
 
 Routers.get('/', (req, res) => {
     return res.json({ message: 'Hello World' })
@@ -36,8 +42,13 @@ Routers.post('/student', createStudentController.handle)
 //---- ROTAS COURSES ---//
 Routers.get('/courses', listCursesUserController.handle)
 Routers.post('/courses', ensureAuthenticate, createCoursesController.handle)
-Routers.get('/course/:courseId',)
-Routers.post('/course/modules/', ensureAuthenticate, createCoursesModulesController.handle)
+Routers.get('/course/modules/', listModulesCourseController.handle)
+Routers.post('/course/modules/', createCoursesModulesController.handle)
+
+
+//---- ROTAS CLASSES ---//
+Routers.post('/classes', createClassesCoursesController.handle)
+
 
 
 

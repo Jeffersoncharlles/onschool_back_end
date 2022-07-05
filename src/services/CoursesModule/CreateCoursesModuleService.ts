@@ -7,19 +7,25 @@ interface IListModules {
 }
 
 class CreateCoursesModuleService {
-    async execute({ cousesId, userId, name }: IListModules) {
-        const modules = await prisma.modulesCourses.findMany({ where: { cousesId } })
-        if (modules) throw new Error("Exists Modules!")
+    async execute({ cousesId: id, userId, name }: IListModules) {
+        const curses = await prisma.course.findFirst({ where: { id } })
+
+        if (!curses) throw new Error("No Exists Curses!")
+
+        const modules = await prisma.modulesCourses.findFirst({ where: { cousesId: curses.id } })
+
+        if (modules?.name === name) throw new Error("Exists modules!")
 
         const create = await prisma.modulesCourses.create({
             data: {
                 name,
-                cousesId,
+                cousesId: curses.id,
             },
             select: { name: true, id: true, course: true }
         })
 
         return create
+
     }
 }
 
