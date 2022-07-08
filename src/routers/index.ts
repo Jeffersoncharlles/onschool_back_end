@@ -10,6 +10,7 @@ import { CreateStudentController } from '../controllers/Student/CreateStudentCon
 import { CreateCoursesModuleController } from '../controllers/CoursesModule/CreateCoursesModuleController';
 import { ListModulesCourseController } from '../controllers/CoursesModule/ListModulesCourseController';
 import { CreateClassesCoursesController } from '../controllers/Classes/CreateClassesCoursesController';
+import { ListClassesModuleController } from '../controllers/Classes/ListClassesModuleController';
 
 
 
@@ -24,6 +25,7 @@ const createStudentController = new CreateStudentController()
 
 const createCoursesModulesController = new CreateCoursesModuleController()
 const listModulesCourseController = new ListModulesCourseController()
+const listClassesModuleController = new ListClassesModuleController()
 
 
 const createClassesCoursesController = new CreateClassesCoursesController()
@@ -48,6 +50,7 @@ Routers.post('/course/modules/', createCoursesModulesController.handle)
 
 //---- ROTAS CLASSES ---//
 Routers.post('/classes', createClassesCoursesController.handle)
+Routers.get('/modules/classes', listClassesModuleController.handle)
 
 
 

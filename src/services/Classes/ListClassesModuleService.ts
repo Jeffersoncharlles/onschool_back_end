@@ -8,7 +8,14 @@ interface IListClasses {
 class ListClassesModuleService {
     async execute({ moduleId }: IListClasses) {
 
-        const classes = await prisma.classes.findMany({ where: { coursesId: moduleId } })
+        const classes = await prisma.classes.findMany({
+            where: {
+                modulesCoursesId: moduleId
+            },
+            include: { video: true },
+        })
+
+        return classes;
     }
 }
 

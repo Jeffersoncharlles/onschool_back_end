@@ -7,7 +7,7 @@ class ListClassesModuleController {
         const listClassesModule = new ListClassesModuleService()
         const { moduleId } = req.body
         const response = await listClassesModule.execute({ moduleId })
-        return response
+        return res.json(response)
     }
 }
 
